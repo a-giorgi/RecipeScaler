@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listContentElements.add("TEST");
+                listContentElements.add("TITLETITLETITLETITLETIT");
                 listContentAdapter.notifyItemInserted(listContentElements.size() - 1);
 
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -115,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
     } */
 
     static class ListElementViewHolder extends RecyclerView.ViewHolder {
-        EditText title;
+        TextView title;
         
 
         public ListElementViewHolder(View itemView) {
             super(itemView);
-            title = (EditText) itemView.findViewById(R.id.list_element);
+            title = (TextView) itemView.findViewById(R.id.list_element);
 
         }
     }
