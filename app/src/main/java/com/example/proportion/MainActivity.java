@@ -40,19 +40,12 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         AddElementDialog addElementDialog = new AddElementDialog(this);
         addElementDialog.show(getSupportFragmentManager(), "dialog");
 
-
-        /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.fab)
-                .setAction("Action", null).show();*/
     }
-    private void showElementDialog(View view, String name, String quantity){
+    private void showElementDialog(View view, String name, String quantity, int index){
         AddElementDialog addElementDialog = new AddElementDialog(this);
+        addElementDialog.setData(name,quantity,index);
         addElementDialog.show(getSupportFragmentManager(), "dialog");
 
-
-        /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.fab)
-                .setAction("Action", null).show();*/
     }
 
     @Override
@@ -80,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
             @Override
             public void onBindViewHolder(@NonNull ListElementViewHolder viewHolder, int i) {
+                viewHolder.setIndex(i);
                 viewHolder.title.setText(listContentElements.get(i).getName());
                 viewHolder.quantity.setText(String.valueOf(listContentElements.get(i).getQuantity()));
 
@@ -111,12 +105,8 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -125,16 +115,25 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     }
 
     @Override
-    public void onResult(String name, double value) {
-        //Toast.makeText(this, "Name: " + name + ", Value: " + value, Toast.LENGTH_SHORT).show();
-        listContentElements.add(new Element(name,value));
-        listContentAdapter.notifyItemInserted(listContentElements.size() - 1);
+    public void onResult(String name, double value, int index) {
+        if(index<0) {
+            listContentElements.add(new Element(name, value));
+            listContentAdapter.notifyItemInserted(listContentElements.size() - 1);
+        }else{
+            listContentElements.get(index).setName(name);
+            listContentElements.get(index).setQuantity(value);
+            listContentAdapter.notifyItemChanged(index);
+        }
     }
 
     class ListElementViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView quantity;
-        
+        int index;
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
 
         public ListElementViewHolder(View itemView) {
             super(itemView);
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
             ImageButton editButton = (ImageButton) itemView.findViewById((R.id.edit_element_button));
             editButton.setOnClickListener(v -> {
-                showElementDialog(v,title.getText().toString(), quantity.getText().toString());
+                showElementDialog(v,title.getText().toString(), quantity.getText().toString(),index);
             });
 
         }

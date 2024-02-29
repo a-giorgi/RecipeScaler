@@ -16,13 +16,29 @@ public class AddElementDialog extends DialogFragment {
 
     String name;
     double value;
+    int index;
+    Type type;
     DialogCallback dialogCallback;
     interface DialogCallback {
-        void onResult(String name, double value);
+        void onResult(String name, double value, int index);
+    }
+    enum Type {
+        ADD,
+        EDIT
     }
 
+
     public AddElementDialog(DialogCallback dialogCallback) {
+        this.type = Type.ADD;
         this.dialogCallback = dialogCallback;
+        this.index = -1;
+    }
+
+    public void setData(String name, String value, int index){
+        this.name = name;
+        this.value = Double.parseDouble(value);
+        this.index = index;
+        this.type = Type.EDIT;
     }
 
     @NonNull
@@ -35,6 +51,11 @@ public class AddElementDialog extends DialogFragment {
 
         EditText editTextName = view.findViewById(R.id.editTextName);
         EditText editTextValue = view.findViewById(R.id.editTextValue);
+
+        if(type == Type.EDIT){
+            editTextName.setText(name);
+            editTextValue.setText(String.valueOf(value));
+        }
 
         builder.setView(view)
                 .setTitle("Enter Details")
@@ -53,7 +74,9 @@ public class AddElementDialog extends DialogFragment {
                     return;
                 }
 
-                dialogCallback.onResult(name, Double.parseDouble(value));
+
+
+                dialogCallback.onResult(name, Double.parseDouble(value), index);
                 dismiss();
             });
         });
