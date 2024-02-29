@@ -19,12 +19,13 @@ import com.example.proportion.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddElementDialog.DialogCallback {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -32,8 +33,27 @@ public class MainActivity extends AppCompatActivity {
     private LayoutInflater inflater;
 
     private RecyclerView listContentView;
-    private ArrayList<String> listContentElements;
+    private ArrayList<Element> listContentElements;
     private RecyclerView.Adapter<ListElementViewHolder> listContentAdapter;
+
+    private void showElementDialog(View view){
+        AddElementDialog addElementDialog = new AddElementDialog(this);
+        addElementDialog.show(getSupportFragmentManager(), "dialog");
+
+
+        /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAnchorView(R.id.fab)
+                .setAction("Action", null).show();*/
+    }
+    private void showElementDialog(View view, String name, String quantity){
+        AddElementDialog addElementDialog = new AddElementDialog(this);
+        addElementDialog.show(getSupportFragmentManager(), "dialog");
+
+
+        /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAnchorView(R.id.fab)
+                .setAction("Action", null).show();*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onBindViewHolder(@NonNull ListElementViewHolder viewHolder, int i) {
-                viewHolder.title.setText(listContentElements.get(i));
+                viewHolder.title.setText(listContentElements.get(i).getName());
+                viewHolder.quantity.setText(String.valueOf(listContentElements.get(i).getQuantity()));
+
             }
 
             @Override
@@ -75,12 +97,7 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listContentElements.add("TITLETITLETITLETITLETIT");
-                listContentAdapter.notifyItemInserted(listContentElements.size() - 1);
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
+                showElementDialog(view);
             }
         });
     }
@@ -106,21 +123,28 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-/*
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
-    } */
 
-    static class ListElementViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onResult(String name, double value) {
+        //Toast.makeText(this, "Name: " + name + ", Value: " + value, Toast.LENGTH_SHORT).show();
+        listContentElements.add(new Element(name,value));
+        listContentAdapter.notifyItemInserted(listContentElements.size() - 1);
+    }
+
+    class ListElementViewHolder extends RecyclerView.ViewHolder {
         TextView title;
+        TextView quantity;
         
 
         public ListElementViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.list_element);
+            quantity = (TextView) itemView.findViewById(R.id.list_element_qty);
+
+            ImageButton editButton = (ImageButton) itemView.findViewById((R.id.edit_element_button));
+            editButton.setOnClickListener(v -> {
+                showElementDialog(v,title.getText().toString(), quantity.getText().toString());
+            });
 
         }
     }
