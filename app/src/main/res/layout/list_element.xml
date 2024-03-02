@@ -43,5 +43,14 @@
             android:src="@drawable/pencil_solid"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"/>
+        <ImageButton
+            android:id="@+id/delete_element_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:src="@drawable/trash_solid"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
     </LinearLayout>
 </RelativeLayout>

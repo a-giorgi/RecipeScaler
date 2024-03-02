@@ -144,6 +144,13 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             editButton.setOnClickListener(v -> {
                 showElementDialog(v,title.getText().toString(), quantity.getText().toString(),index);
             });
+            ImageButton deleteButton = (ImageButton) itemView.findViewById((R.id.delete_element_button));
+            deleteButton.setOnClickListener(v -> {
+                listContentElements.remove(index);
+                listContentAdapter.notifyItemRemoved(index);
+                listContentAdapter.notifyDataSetChanged();
+            });
+
 
         }
     }
