@@ -19,13 +19,14 @@ import com.example.proportion.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AddElementDialog.DialogCallback {
+public class MainActivity extends AppCompatActivity implements AddElementDialog.DialogCallback, TotalDialog.TotalDialogCallback {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -94,6 +95,15 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
                 showElementDialog(view);
             }
         });
+
+        Button scaleButton = (Button) this.findViewById(R.id.button_scale);
+        scaleButton.setOnClickListener(v ->{
+            TotalDialog totalDialog = new TotalDialog(this);
+            totalDialog.show(getSupportFragmentManager(), "totalDialog");
+        });
+
+
+
     }
 
     @Override
@@ -124,6 +134,11 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             listContentElements.get(index).setQuantity(value);
             listContentAdapter.notifyItemChanged(index);
         }
+    }
+
+    @Override
+    public void onTotalChanged(double value, int index) {
+        Toast.makeText(this.getBaseContext(),String.valueOf(value),Toast.LENGTH_SHORT).show();
     }
 
     class ListElementViewHolder extends RecyclerView.ViewHolder {
