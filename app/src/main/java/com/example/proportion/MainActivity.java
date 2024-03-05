@@ -20,9 +20,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -138,7 +141,13 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
     @Override
     public void onTotalChanged(double value, int index) {
-        Toast.makeText(this.getBaseContext(),String.valueOf(value),Toast.LENGTH_SHORT).show();
+        EditText previousTotalText = (EditText) this.findViewById(R.id.total);
+        if(previousTotalText.getText().toString().isEmpty()){
+            return;
+        }
+        double previous = Double.parseDouble(previousTotalText.getText().toString());
+        double scaleFactor = value / previous;
+        Toast.makeText(this.getBaseContext(),String.valueOf(scaleFactor),Toast.LENGTH_SHORT).show();
     }
 
     class ListElementViewHolder extends RecyclerView.ViewHolder {
