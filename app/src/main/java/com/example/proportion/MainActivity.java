@@ -52,6 +52,21 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
     }
 
+    private void scaleElements(double scaleFactor){
+        for(int i = 0; i<listContentElements.size(); i++) {
+            Element element = listContentElements.get(i);
+            element.setQuantity(element.getQuantity() * scaleFactor);
+            listContentAdapter.notifyItemChanged(i);
+        }
+        EditText previousTotalText = (EditText) this.findViewById(R.id.total);
+        if(previousTotalText.getText().toString().isEmpty()){
+            return;
+        }
+        double current = Double.parseDouble(previousTotalText.getText().toString())*scaleFactor;
+        previousTotalText.setText(String.valueOf(current));
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         double previous = Double.parseDouble(previousTotalText.getText().toString());
         double scaleFactor = value / previous;
         Toast.makeText(this.getBaseContext(),String.valueOf(scaleFactor),Toast.LENGTH_SHORT).show();
+        scaleElements(scaleFactor);
     }
 
     class ListElementViewHolder extends RecyclerView.ViewHolder {
