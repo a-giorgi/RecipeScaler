@@ -4,10 +4,12 @@ import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import com.google.android.material.slider.Slider;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -119,6 +122,22 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             TotalDialog totalDialog = new TotalDialog(this);
             totalDialog.show(getSupportFragmentManager(), "totalDialog");
         });
+
+        Slider slider = (Slider) this.findViewById(R.id.seekBar);
+        slider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(Slider slider) {
+                float value = slider.getValue();
+                double scaleFactor = value /100.0; //must be fixed
+                scaleElements(scaleFactor);
+            }
+        });
+
 
 
 
