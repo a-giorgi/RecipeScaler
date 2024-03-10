@@ -4,10 +4,20 @@ public class Element {
 
     private String name;
     private double quantity;
+    private double initialValue;
 
     public Element(String name, double quantity) {
         this.name = name;
         this.quantity = quantity;
+        this.initialValue = quantity;
+    }
+
+    public double getInitialValue() {
+        return initialValue;
+    }
+
+    public void setInitialValue(double initialValue) {
+        this.initialValue = initialValue;
     }
 
     public String getName() {
