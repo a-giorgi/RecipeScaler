@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     private ArrayList<Element> listContentElements;
     private RecyclerView.Adapter<ListElementViewHolder> listContentAdapter;
 
+    private double currentScaleFactor = 1.0;
+
     private void showElementDialog(View view){
         AddElementDialog addElementDialog = new AddElementDialog(this);
         addElementDialog.show(getSupportFragmentManager(), "dialog");
@@ -56,9 +58,10 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     }
 
     private void scaleElements(double scaleFactor){
+        currentScaleFactor = scaleFactor;
         for(int i = 0; i<listContentElements.size(); i++) {
             Element element = listContentElements.get(i);
-            element.setQuantity(element.getQuantity() * scaleFactor);
+            element.setQuantity(element.getInitialValue() * scaleFactor);
             listContentAdapter.notifyItemChanged(i);
         }
         EditText previousTotalText = (EditText) this.findViewById(R.id.total);
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         }
         double current = Double.parseDouble(previousTotalText.getText().toString())*scaleFactor;
         previousTotalText.setText(String.valueOf(current));
+
 
     }
 
@@ -133,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             @Override
             public void onStopTrackingTouch(Slider slider) {
                 float value = slider.getValue();
-                double scaleFactor = value /100.0; //must be fixed
+                double scaleFactor = value /100.0;
                 scaleElements(scaleFactor);
             }
         });
@@ -169,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         }else{
             listContentElements.get(index).setName(name);
             listContentElements.get(index).setQuantity(value);
+            listContentElements.get(index).setInitialValue(value/currentScaleFactor);
             listContentAdapter.notifyItemChanged(index);
         }
     }
