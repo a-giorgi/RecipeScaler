@@ -58,20 +58,18 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     }
 
     private void scaleElements(double scaleFactor){
-        currentScaleFactor = scaleFactor;
         for(int i = 0; i<listContentElements.size(); i++) {
             Element element = listContentElements.get(i);
             element.setQuantity(element.getInitialValue() * scaleFactor);
             listContentAdapter.notifyItemChanged(i);
         }
         EditText previousTotalText = (EditText) this.findViewById(R.id.total);
-        if(previousTotalText.getText().toString().isEmpty()){
-            return;
+        if(!previousTotalText.getText().toString().isEmpty()){
+            double current = Double.parseDouble(previousTotalText.getText().toString())/
+                    currentScaleFactor * scaleFactor;
+            previousTotalText.setText(String.valueOf(current));
         }
-        double current = Double.parseDouble(previousTotalText.getText().toString())*scaleFactor;
-        previousTotalText.setText(String.valueOf(current));
-
-
+        currentScaleFactor = scaleFactor;
     }
 
     @Override
