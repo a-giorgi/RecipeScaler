@@ -171,7 +171,9 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     @Override
     public void onResult(String name, double value, int index) {
         if(index<0) {
-            listContentElements.add(new Element(name, value));
+            Element newElement = new Element(name,value);
+            newElement.setInitialValue(value/currentScaleFactor);
+            listContentElements.add(newElement);
             listContentAdapter.notifyItemInserted(listContentElements.size() - 1);
         }else{
             listContentElements.get(index).setName(name);
