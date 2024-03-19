@@ -121,6 +121,11 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
         Button scaleButton = (Button) this.findViewById(R.id.button_scale);
         scaleButton.setOnClickListener(v ->{
+            EditText totalValue = (EditText) this.findViewById(R.id.total);
+            if(totalValue.getText().toString().isEmpty()){
+                Toast.makeText(this.getBaseContext(),"Specify a total value first!",Toast.LENGTH_SHORT).show();
+                return;
+            }
             TotalDialog totalDialog = new TotalDialog(this);
             totalDialog.show(getSupportFragmentManager(), "totalDialog");
         });
@@ -184,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         }
         double previous = Double.parseDouble(previousTotalText.getText().toString());
         double scaleFactor = value / previous;
-        Toast.makeText(this.getBaseContext(),String.valueOf(scaleFactor),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this.getBaseContext(),String.valueOf(scaleFactor),Toast.LENGTH_SHORT).show();
         scaleElements(scaleFactor);
     }
 
