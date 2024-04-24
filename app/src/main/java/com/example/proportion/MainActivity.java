@@ -6,6 +6,9 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.example.proportion.databinding.ActivityMainBinding;
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.TextBlock;
+import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.slider.Slider;
 
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -13,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.MediaStore;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -159,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
                 //imageView.setVisibility(ImageView.VISIBLE);
 
                 // Call the OCR function
+                performOcr(photo);
 
             }
         });
@@ -179,19 +184,21 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         return true;
     }
 
+    public boolean verifyPermissions(){
+        return ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.action_scan) {
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (!verifyPermissions()) {
                 ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS_REQUIRED, CAMERA_PERMISSION_REQUEST_CODE);
             } else {
                 openCamera();
             }
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -248,6 +255,24 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             });
 
 
+        }
+    }
+
+    public void performOcr(Bitmap bitmap){
+        TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
+        if (!textRecognizer.isOperational()) {
+            Toast.makeText(this, "OCR is not available!", Toast.LENGTH_LONG).show();
+        } else {
+            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+            SparseArray<TextBlock> items = textRecognizer.detect(frame);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < items.size(); i++) {
+                TextBlock myItem = items.valueAt(i);
+                stringBuilder.append(myItem.getValue());
+                stringBuilder.append("\n");
+            }
+            // Result
+            Toast.makeText(this, stringBuilder.toString(), Toast.LENGTH_LONG).show();
         }
     }
 }
