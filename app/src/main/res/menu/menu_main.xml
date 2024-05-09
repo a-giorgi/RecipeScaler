@@ -8,4 +8,16 @@
         android:orderInCategory="100"
         android:title="Intelligent Scan"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_from_gallery"
+        android:icon="@drawable/camera_solid"
+        android:orderInCategory="100"
+        android:title="From Gallery"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_paste"
+        android:icon="@drawable/camera_solid"
+        android:orderInCategory="100"
+        android:title="Paste Text"
+        app:showAsAction="never" />
 </menu>

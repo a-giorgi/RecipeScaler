@@ -1,15 +1,24 @@
 package com.example.proportion;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.canhub.cropper.CropImageActivity;
+import com.canhub.cropper.CropImageContract;
+import com.canhub.cropper.CropImageContractOptions;
+import com.canhub.cropper.CropImageOptions;
+import com.canhub.cropper.CropImageView;
 import com.example.proportion.databinding.ActivityMainBinding;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.slider.Slider;
+
 
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -36,6 +45,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AddElementDialog.DialogCallback, TotalDialog.TotalDialogCallback {
@@ -62,6 +73,18 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         AddElementDialog addElementDialog = new AddElementDialog(this);
         addElementDialog.setData(name,quantity,index);
         addElementDialog.show(getSupportFragmentManager(), "dialog");
+
+    }
+
+    private void showTextDialog(){
+        TextDialog textDialog = new TextDialog("");
+        textDialog.show(getSupportFragmentManager(), "dialog");
+
+    }
+
+    private void showTextDialog(String text){
+        TextDialog textDialog = new TextDialog(text);
+        textDialog.show(getSupportFragmentManager(), "dialog");
 
     }
 
@@ -163,13 +186,51 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
                 //imageView.setVisibility(ImageView.VISIBLE);
 
                 // Call the OCR function
-                performOcr(photo);
+
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                String path = MediaStore.Images.Media.insertImage(
+                        getApplicationContext().getContentResolver(), photo, "Title", null);
+                launchImageCropper(Uri.parse(path));
+                //performOcr(photo);
 
             }
         });
 
     }
 
+    private void getImageFile() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        getImage.launch(intent);
+    }
+
+
+    ActivityResultLauncher<CropImageContractOptions> cropImage = registerForActivityResult(new CropImageContract(), result -> {
+        if (result.isSuccessful()) {
+            Bitmap cropped = BitmapFactory.decodeFile(result.getUriFilePath(getApplicationContext(), true));
+            performOcr(cropped);
+        }
+    });
+
+    ActivityResultLauncher<Intent> getImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            Intent data = result.getData();
+            if (data != null && data.getData() != null) {
+                Uri imageUri = data.getData();
+                launchImageCropper(imageUri);
+            }
+        }
+    });
+
+    private void launchImageCropper(Uri uri) {
+        CropImageOptions cropImageOptions = new CropImageOptions();
+        cropImageOptions.imageSourceIncludeCamera = true;
+        cropImageOptions.imageSourceIncludeGallery = false;
+        CropImageContractOptions cropImageContractOptions = new CropImageContractOptions(uri, cropImageOptions);
+        cropImage.launch(cropImageContractOptions);
+    }
 
     private void openCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -198,6 +259,10 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
                 openCamera();
             }
             return true;
+        }else if (id == R.id.action_paste ){
+            showTextDialog();
+        }else if (id == R.id.action_from_gallery){
+            getImageFile();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -259,6 +324,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     }
 
     public void performOcr(Bitmap bitmap){
+
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
         if (!textRecognizer.isOperational()) {
             Toast.makeText(this, "OCR is not available!", Toast.LENGTH_LONG).show();
@@ -272,7 +338,10 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
                 stringBuilder.append("\n");
             }
             // Result
-            Toast.makeText(this, stringBuilder.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, stringBuilder.toString(), Toast.LENGTH_LONG).show();
+            showTextDialog(stringBuilder.toString());
+
         }
+
     }
 }
