@@ -66,5 +66,22 @@ public class NER {
     }
 
 
+    private float[] tokenize(String sentence) {
+        float[] tokens = new float[SENTENCE_LENGTH];
+        String[] words = sentence.split("\\s+");
+        for (int i = 0; i < SENTENCE_LENGTH; i++) {
+            float token = 0;
+            if (i < words.length) {
+                words[i] = words[i].replaceAll("[^\\w]", "");
+                if (tokenizer.containsKey(words[i])) {
+                    token = Float.parseFloat(tokenizer.get(words[i]));
+                }
+            }
+            tokens[i] = token;
+        }
+        return tokens;
+    }
+
+
 
 }
