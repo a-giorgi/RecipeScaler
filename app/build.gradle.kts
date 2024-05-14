@@ -29,6 +29,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    aaptOptions {
+        noCompress += "json"
+        noCompress += "tflite"
+    }
 }
 
 dependencies {
@@ -41,8 +45,9 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("com.google.android.gms:play-services-vision:20.1.3")
     implementation("com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0")
-    implementation("org.tensorflow:tensorflow-lite:+")
-    implementation("org.tensorflow:tensorflow-lite-support:+")
+    implementation("org.tensorflow:tensorflow-lite:0.4.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.0")
+    implementation("org.tensorflow:tensorflow-lite-select-tf-ops:+")
     implementation("com.google.code.gson:gson:2.8.8")
     implementation("com.vanniktech:android-image-cropper:4.5.0")
     testImplementation("junit:junit:4.13.2")

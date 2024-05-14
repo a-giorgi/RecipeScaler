@@ -260,7 +260,17 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             }
             return true;
         }else if (id == R.id.action_paste ){
-            showTextDialog();
+            //showTextDialog();
+            // TEST!!!!
+            try {
+                NER ner = NER.getInstance(this.getBaseContext());
+                String[] tags = ner.predict("1 Cup of hot milk the add a tablespoon of cinnamon");
+                Toast.makeText(this.getBaseContext(),String.join("-",tags),Toast.LENGTH_SHORT).show();
+                showTextDialog(String.join("-",tags));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }else if (id == R.id.action_from_gallery){
             getImageFile();
         }
