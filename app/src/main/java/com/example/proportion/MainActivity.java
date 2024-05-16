@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             // TEST!!!!
             try {
                 NER ner = NER.getInstance(this.getBaseContext());
-                String[] tags = ner.predict("1 Cup of hot milk the add a tablespoon of cinnamon");
+                String[] tags = ner.predict("5 ounces rum 4 ounces triple sec");
                 Toast.makeText(this.getBaseContext(),String.join("-",tags),Toast.LENGTH_SHORT).show();
                 showTextDialog(String.join("-",tags));
             } catch (IOException e) {

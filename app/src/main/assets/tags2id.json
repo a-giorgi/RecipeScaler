@@ -1,6 +1,6 @@
 {
-    "FOOD": 0,
-    "O": 1,
-    "QUANTITY": 2,
-    "UNIT": 3
+    "O": 0,
+    "QUANTITY": 1,
+    "UNIT": 2,
+    "FOOD": 3
 }

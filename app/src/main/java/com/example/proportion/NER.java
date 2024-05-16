@@ -58,10 +58,10 @@ public class NER {
 
     private void loadTokenToTag(){
         tokenToTag = new HashMap<>();
-        tokenToTag.put("0","FOOD");
-        tokenToTag.put("1","O");
-        tokenToTag.put("2","QUANTITY");
-        tokenToTag.put("3","UNIT");
+        tokenToTag.put("0","O");
+        tokenToTag.put("1","QUANTITY");
+        tokenToTag.put("2","UNIT");
+        tokenToTag.put("3","FOOD");
     }
 
     private HashMap<String, String> loadJSONToHashMap(AssetManager assetManager, String jsonPath)
@@ -78,7 +78,7 @@ public class NER {
     }
 
     public String[] predict(String sentence){
-        float[][] input = tokenize(sentence);
+        int[][] input = tokenize(sentence);
         //[][] input = new float[1][SENTENCE_LENGTH];
         //input[0] = tokens;
         //float[][] in = transposeMatrix(input);
@@ -92,21 +92,21 @@ public class NER {
     private String[] convertToTags(float[][] prediction){
         String[] output = new String[SENTENCE_LENGTH];
         for (int i = 0; i < SENTENCE_LENGTH; i++) {
-            int tag = argmax(prediction[i])+1;
+            int tag = argmax(prediction[i]);
             output[i] = tokenToTag.get(String.valueOf(tag));
         }
         return output;
     }
 
-    private float[][] tokenize(String sentence) {
-        float[][] tokens = new float[1][SENTENCE_LENGTH];
+    private int[][] tokenize(String sentence) {
+        int[][] tokens = new int[1][SENTENCE_LENGTH];
         String[] words = sentence.split("\\s+");
         for (int i = 0; i < SENTENCE_LENGTH; i++) {
-            float token = 0;
+            int token = 0;
             if (i < words.length) {
                 words[i] = words[i].replaceAll("[^\\w]", "");
                 if (tokenizer.containsKey(words[i])) {
-                    token = Float.parseFloat(tokenizer.get(words[i]));
+                    token = Integer.parseInt(tokenizer.get(words[i]));
                 }
             }
             tokens[0][i] = token;
