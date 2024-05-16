@@ -1,6 +1,5 @@
-package com.example.proportion;
+package com.example.proportion.dialogs;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.proportion.R;
+
 public class TextDialog extends DialogFragment {
 
     private String text = "";
 
     TextDialog.TextDialogCallback dialogCallback;
-    interface TextDialogCallback {
+    public interface TextDialogCallback {
         void onTextConfirmed(String text);
     }
 

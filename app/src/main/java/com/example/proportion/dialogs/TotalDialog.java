@@ -1,4 +1,4 @@
-package com.example.proportion;
+package com.example.proportion.dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -12,15 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-public class AddElementDialog extends DialogFragment {
+import com.example.proportion.R;
 
-    String name;
+public class TotalDialog extends DialogFragment {
     double value;
     int index;
-    Type type;
-    DialogCallback dialogCallback;
-    interface DialogCallback {
-        void onResult(String name, double value, int index);
+
+    TotalDialogCallback dialogCallback;
+    public interface TotalDialogCallback {
+        void onTotalChanged(double value, int index);
     }
     enum Type {
         ADD,
@@ -28,17 +28,14 @@ public class AddElementDialog extends DialogFragment {
     }
 
 
-    public AddElementDialog(DialogCallback dialogCallback) {
-        this.type = Type.ADD;
+    public TotalDialog(TotalDialogCallback dialogCallback) {
         this.dialogCallback = dialogCallback;
         this.index = -1;
     }
 
-    public void setData(String name, String value, int index){
-        this.name = name;
+    public void setData(String value, int index){
         this.value = Double.parseDouble(value);
         this.index = index;
-        this.type = Type.EDIT;
     }
 
     @NonNull
@@ -47,18 +44,13 @@ public class AddElementDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.add_element_dialog, null);
+        View view = inflater.inflate(R.layout.total_dialog, null);
 
-        EditText editTextName = view.findViewById(R.id.editTextName);
-        EditText editTextValue = view.findViewById(R.id.editTextValue);
+        EditText editTextTotal = view.findViewById(R.id.new_total_value);
 
-        if(type == Type.EDIT){
-            editTextName.setText(name);
-            editTextValue.setText(String.valueOf(value));
-        }
 
         builder.setView(view)
-                .setTitle("Enter Details")
+                .setTitle("Enter New Total Value")
                 .setPositiveButton("OK", null)
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
@@ -66,17 +58,18 @@ public class AddElementDialog extends DialogFragment {
         dialog.setOnShowListener(dialog1 -> {
             AlertDialog alertDialog = (AlertDialog) dialog1;
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-                String name = editTextName.getText().toString();
-                String value =  editTextValue.getText().toString();
+                String total = editTextTotal.getText().toString();
 
-                if(name.isEmpty() || value.isEmpty()){
-                    Toast.makeText(getContext(),"Please fill every field", Toast.LENGTH_SHORT).show();
+                if(total.isEmpty()){
+                    Toast.makeText(getContext(),"Please fill every field",
+
+                            Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
 
-                dialogCallback.onResult(name, Double.parseDouble(value), index);
+                dialogCallback.onTotalChanged(Double.parseDouble(total), index);
                 dismiss();
             });
         });

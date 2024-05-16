@@ -26,3 +26,12 @@ Recipe Scaler is an Android application designed to assist users in scaling quan
 
 - Scaling can be initiated by pressing the "Scale to new total" button.
 - Alternatively, users can utilize the slider in the Main View for automatic scaling of item quantities.
+
+### Intelligent Functions
+
+- Pressing the menu button in the top right corner provides options to manually input text to convert into a recipe.
+  - **Intelligent Scan**: Use the phone's camera to capture and extract text using OCR.
+  - **From Gallery**: Select an image from the gallery and extract text using OCR, similar to the Intelligent Scan option.
+  - **Paste Text**: Manually paste text.
+
+- Once the text is input, it will be processed by a TensorFlow Lite model that performs Named Entity Recognition (NER) to automatically identify and add the detected ingredients to the item list. Currently it works only with english language.

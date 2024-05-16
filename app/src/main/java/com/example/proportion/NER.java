@@ -25,12 +25,11 @@ import java.util.HashMap;
 public class NER {
     public static final String model = "NER.tflite";
     public static final String word_index = "tokenizer_word_index.json";
+    public static final String tags_mapper = "id2tag.json";
     private Interpreter interpreter;
     private HashMap<String, String> tokenizer;
-
     private HashMap<String, String> tokenToTag;
     private final int SENTENCE_LENGTH = 72;
-
     private static NER instance = null;
 
     public static NER getInstance(Context context) throws IOException{
@@ -44,24 +43,21 @@ public class NER {
         AssetManager assetManager = context.getAssets();
         interpreter = new Interpreter(loadModelFile(assetManager, model));
         tokenizer = loadJSONToHashMap(assetManager,word_index);
-        loadTokenToTag();
+        tokenToTag = loadJSONToHashMap(assetManager,tags_mapper);
     }
 
-    private MappedByteBuffer loadModelFile(AssetManager assetManager, String modelPath) throws IOException {
+    public HashMap<String, String> getTokenToTag() {
+        return tokenToTag;
+    }
+
+    private MappedByteBuffer loadModelFile(AssetManager assetManager, String modelPath)
+            throws IOException {
         AssetFileDescriptor fileDescriptor = assetManager.openFd(modelPath);
         FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
         FileChannel fileChannel = inputStream.getChannel();
         long startOffset = fileDescriptor.getStartOffset();
         long declaredLength = fileDescriptor.getDeclaredLength();
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
-    }
-
-    private void loadTokenToTag(){
-        tokenToTag = new HashMap<>();
-        tokenToTag.put("0","O");
-        tokenToTag.put("1","QUANTITY");
-        tokenToTag.put("2","UNIT");
-        tokenToTag.put("3","FOOD");
     }
 
     private HashMap<String, String> loadJSONToHashMap(AssetManager assetManager, String jsonPath)
@@ -79,13 +75,9 @@ public class NER {
 
     public String[] predict(String sentence){
         int[][] input = tokenize(sentence);
-        //[][] input = new float[1][SENTENCE_LENGTH];
-        //input[0] = tokens;
-        //float[][] in = transposeMatrix(input);
-
         float[][][] output = new float[1][SENTENCE_LENGTH][4];
         interpreter.run(input, output);
-        printOutput(output[0]);
+        //printOutput(output[0]);
         return convertToTags(output[0]);
     }
 
@@ -117,15 +109,12 @@ public class NER {
     public static float[][] transposeMatrix(float[][] matrix){
         int m = matrix.length;
         int n = matrix[0].length;
-
         float[][] transposedMatrix = new float[n][m];
-
         for(int x = 0; x < n; x++) {
             for(int y = 0; y < m; y++) {
                 transposedMatrix[x][y] = matrix[y][x];
             }
         }
-
         return transposedMatrix;
     }
 
