@@ -49,7 +49,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AddElementDialog.DialogCallback, TotalDialog.TotalDialogCallback {
+public class MainActivity extends AppCompatActivity implements AddElementDialog.DialogCallback,
+        TotalDialog.TotalDialogCallback, TextDialog.TextDialogCallback {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -77,13 +78,13 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     }
 
     private void showTextDialog(){
-        TextDialog textDialog = new TextDialog("");
+        TextDialog textDialog = new TextDialog("",this);
         textDialog.show(getSupportFragmentManager(), "dialog");
 
     }
 
     private void showTextDialog(String text){
-        TextDialog textDialog = new TextDialog(text);
+        TextDialog textDialog = new TextDialog(text, this);
         textDialog.show(getSupportFragmentManager(), "dialog");
 
     }
@@ -248,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     public boolean verifyPermissions(){
         return ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -260,16 +262,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             }
             return true;
         }else if (id == R.id.action_paste ){
-            //showTextDialog();
-            // TEST!!!!
-            try {
-                NER ner = NER.getInstance(this.getBaseContext());
-                String[] tags = ner.predict("5 ounces rum 4 ounces triple sec");
-                Toast.makeText(this.getBaseContext(),String.join("-",tags),Toast.LENGTH_SHORT).show();
-                showTextDialog(String.join("-",tags));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            showTextDialog();
 
         }else if (id == R.id.action_from_gallery){
             getImageFile();
@@ -302,6 +295,17 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         double scaleFactor = value / previous;
         //Toast.makeText(this.getBaseContext(),String.valueOf(scaleFactor),Toast.LENGTH_SHORT).show();
         scaleElements(scaleFactor);
+    }
+
+    @Override
+    public void onTextConfirmed(String text) {
+        try {
+            NER ner = NER.getInstance(this.getBaseContext());
+            String[] tags = ner.predict(text);
+            Toast.makeText(this.getBaseContext(),String.join("-",tags),Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     class ListElementViewHolder extends RecyclerView.ViewHolder {

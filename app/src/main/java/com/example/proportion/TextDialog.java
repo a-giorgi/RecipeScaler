@@ -16,7 +16,13 @@ public class TextDialog extends DialogFragment {
 
     private String text = "";
 
-    public TextDialog(String text){
+    TextDialog.TextDialogCallback dialogCallback;
+    interface TextDialogCallback {
+        void onTextConfirmed(String text);
+    }
+
+    public TextDialog(String text, TextDialog.TextDialogCallback dialogCallback){
+        this.dialogCallback = dialogCallback;
         this.text = text;
     }
 
@@ -45,6 +51,7 @@ public class TextDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String inputText = editText.getText().toString();
+                dialogCallback.onTextConfirmed(inputText);
                 dismiss();
             }
         });
