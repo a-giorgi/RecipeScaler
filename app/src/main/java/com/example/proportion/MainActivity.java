@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                //photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 String path = MediaStore.Images.Media.insertImage(
                         getApplicationContext().getContentResolver(), photo, "Title",
                         null);
