@@ -26,6 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     private RecyclerView.Adapter<ListElementViewHolder> listContentAdapter;
 
     private double currentScaleFactor = 1.0;
+
+    private double unscaledTotal = 1.0;
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final String[] PERMISSIONS_REQUIRED = new String[]{
@@ -120,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         scaleButton.setOnClickListener(v ->{
             EditText totalValue = (EditText) this.findViewById(R.id.total);
             if(totalValue.getText().toString().isEmpty()){
-                Toast.makeText(this.getBaseContext(),"Specify a total value first!",
+                Toast.makeText(this.getBaseContext(),getString(R.string.total_value_toast),
                         Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -156,6 +160,30 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
                         getApplicationContext().getContentResolver(), photo, "Title",
                         null);
                 launchImageCropper(Uri.parse(path));
+            }
+        });
+
+        ((EditText)findViewById(R.id.total)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() != 0){
+                    double currentTotal = Double.parseDouble(s.toString());
+                    unscaledTotal = currentTotal / currentScaleFactor;
+                    /* Toast.makeText(getBaseContext(),"Current:"+ currentTotal +"Unscaled: " +
+                                    unscaledTotal+ " Scale F: "+ currentScaleFactor,
+                            Toast.LENGTH_SHORT).show(); */
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -217,8 +245,19 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             return;
         }
         double previous = Double.parseDouble(previousTotalText.getText().toString());
-        double scaleFactor = value / previous;
+        if(previous<=0){
+            Toast.makeText(this.getBaseContext(),"You must insert a value greater than zero!",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //double scaleFactor = value / previous;
+        double scaleFactor = value / unscaledTotal;
         //Toast.makeText(this.getBaseContext(),String.valueOf(scaleFactor),Toast.LENGTH_SHORT).show();
+
+        Slider slider = this.findViewById(R.id.seekBar);
+        int slVal = (int)(scaleFactor*100);
+        slider.setValue(slVal);
+
         scaleElements(scaleFactor);
     }
 
@@ -286,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
         if (!textRecognizer.isOperational()) {
-            Toast.makeText(this, "OCR is not available!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.ocr_not_available), Toast.LENGTH_LONG).show();
         } else {
             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
             SparseArray<TextBlock> items = textRecognizer.detect(frame);
@@ -350,12 +389,19 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             listContentAdapter.notifyItemChanged(i);
         }
         EditText previousTotalText = (EditText) this.findViewById(R.id.total);
+        currentScaleFactor = scaleFactor;
+
         if(!previousTotalText.getText().toString().isEmpty()){
+            /*
             double current = Double.parseDouble(previousTotalText.getText().toString())/
                     currentScaleFactor * scaleFactor;
+
+            */
+            double current = unscaledTotal * scaleFactor;
             previousTotalText.setText(String.valueOf(current));
         }
-        currentScaleFactor = scaleFactor;
+
+        //Toast.makeText(this, String.valueOf(currentScaleFactor), Toast.LENGTH_SHORT).show();
     }
 
     class ListElementViewHolder extends RecyclerView.ViewHolder {

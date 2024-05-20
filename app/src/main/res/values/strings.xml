@@ -1,11 +1,13 @@
 <resources>
-    <string name="app_name">Proportion</string>
+    <string name="app_name">Recipe Scaler</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="total_value_toast">Specify a total value first!</string>
+    <string name="ocr_not_available">OCR is not available!</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
