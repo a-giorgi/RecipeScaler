@@ -9,16 +9,23 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/inputTextStyle"
+            android:id="@+id/editText_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top"
-            android:hint="Enter your text here..."
+            android:textColor="@color/text_color"
+            android:hint="Enter the text with the recipe..."
             android:inputType="textMultiLine"
             android:minLines="5"
             android:scrollbars="vertical" />
+        </com.google.android.material.textfield.TextInputLayout>
     </ScrollView>
 
     <LinearLayout
@@ -29,6 +36,8 @@
 
         <Button
             android:id="@+id/btnCancel"
+            android:backgroundTint="@color/light_red"
+            android:textColor="@color/white"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -38,6 +47,8 @@
 
         <Button
             android:id="@+id/btnConfirm"
+            android:backgroundTint="@color/light_red"
+            android:textColor="@color/white"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

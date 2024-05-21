@@ -5,17 +5,32 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/inputTextStyle"
+        android:id="@+id/editTextName_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name" />
+    </com.google.android.material.textfield.TextInputLayout>
 
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/inputTextStyle"
+        android:id="@+id/editTextValue_input_layout"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/editTextValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:hint="Value" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

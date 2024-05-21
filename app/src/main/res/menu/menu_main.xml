@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.proportion.MainActivity">
     <item
+
         android:id="@+id/action_scan"
         android:icon="@drawable/camera_solid"
         android:orderInCategory="100"

@@ -2,15 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
     <com.google.android.material.slider.Slider
+        app:labelStyle="@style/Tooltip"
+        app:tickColor="@color/dark_red"
+        app:tickColorActive="@color/dark_red"
+        app:tickColorInactive="@color/dark_red"
+        app:trackColorInactive="@color/transparent_dark_red"
+        app:thumbColor="@color/light_red"
+        app:thumbStrokeColor="@color/transparent_dark_red"
+        app:haloColor="@color/transparent_dark_red"
+        app:trackColorActive="@color/light_red"
+
+
         android:id="@+id/seekBar"
+        android:outlineSpotShadowColor="@color/yellow"
         android:valueFrom="1"
         android:valueTo="200"
         android:value="100"
         android:stepSize="1"
+        android:foregroundTint="@color/light_red"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -37,6 +51,8 @@
     </LinearLayout>
 
     <Button
+        android:backgroundTint="@color/light_red"
+        android:textColor="@color/white"
         android:id="@+id/button_scale"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

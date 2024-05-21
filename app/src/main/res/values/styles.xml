@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <!--This is the Tooltip textAppearance -->
+        <item name="android:textAppearance">@style/TextAppearance.Tooltip</item>
+        <!--This is the Tooltip Background Color -->
+        <item name="backgroundTint">@color/yellow</item>
+    </style>
+
+    <style name="TextAppearance.Tooltip" parent="TextAppearance.MaterialComponents.Tooltip">
+        <!--This is the Tooltip Text Color -->
+        <item name="android:textColor">@color/dark_red</item>
+    </style>
+
+    <style name="inputTextStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/text_color</item>
+        <item name="android:textColorHint"> @color/text_color </item>
+        <item name="hintTextColor"> @color/text_color </item>
+    </style>
+
+</resources>

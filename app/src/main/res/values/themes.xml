@@ -2,8 +2,10 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Proportion" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
+        <item name="android:itemBackground">@color/transparent_yellow</item>
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Proportion" parent="Base.Theme.Proportion" />
+    <style name="Theme.Proportion" parent="Base.Theme.Proportion" >
+    </style>
 </resources>
