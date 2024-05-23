@@ -37,5 +37,5 @@ Recipe Scaler is an Android application designed to assist users in scaling quan
 - Once the text is input, it will be processed by a TensorFlow Lite model that performs Named Entity Recognition (NER) to automatically identify and add the detected ingredients to the item list. Currently it works only with english language.
 
 
-### References
+## References
 [1] TASTEset Dataset - https://github.com/taisti/TASTEset
