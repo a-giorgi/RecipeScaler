@@ -1,10 +1,10 @@
 package com.example.proportion.dialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -54,36 +54,35 @@ public class AddElementDialog extends DialogFragment {
         EditText editTextName = view.findViewById(R.id.editTextName);
         EditText editTextValue = view.findViewById(R.id.editTextValue);
 
+        Button btnCancel = view.findViewById(R.id.btnElCancel);
+        Button btnConfirm = view.findViewById(R.id.btnElConfirm);
+
         if(type == Type.EDIT){
             editTextName.setText(name);
             editTextValue.setText(String.valueOf(value));
         }
 
-        builder.setView(view)
-                .setTitle("Enter Details")
-                .setPositiveButton("OK", null)
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setView(view).setTitle("Enter an item");
+
+        btnCancel.setOnClickListener(v -> dismiss());
+
+        btnConfirm.setOnClickListener(v -> {
+            String name = editTextName.getText().toString();
+            String value = editTextValue.getText().toString();
+
+            if (name.isEmpty() || value.isEmpty()) {
+                Toast.makeText(getContext(), "Please fill every field",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            dialogCallback.onResult(name, Double.parseDouble(value), index);
+            dismiss();
+        });
 
         Dialog dialog = builder.create();
-        dialog.setOnShowListener(dialog1 -> {
-            AlertDialog alertDialog = (AlertDialog) dialog1;
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-                String name = editTextName.getText().toString();
-                String value =  editTextValue.getText().toString();
-
-                if(name.isEmpty() || value.isEmpty()){
-                    Toast.makeText(getContext(),"Please fill every field",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-
-
-                dialogCallback.onResult(name, Double.parseDouble(value), index);
-                dismiss();
-            });
-        });
         dialog.setCancelable(false);
+
         return dialog;
     }
 }

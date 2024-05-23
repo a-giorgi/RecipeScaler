@@ -18,4 +18,8 @@
         <item name="hintTextColor"> @color/text_color </item>
     </style>
 
+    <style name="roundedDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/rounded_corners</item>
+    </style>
+
 </resources>

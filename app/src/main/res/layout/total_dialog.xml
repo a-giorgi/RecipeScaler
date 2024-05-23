@@ -5,17 +5,49 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Specify the new total" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/inputTextStyle"
+        android:id="@+id/editTextName_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/new_total_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
-        android:hint="Value" />
+        android:hint="New total" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnTotCancel"
+            android:backgroundTint="@color/light_red"
+            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:onClick="onCancelClick"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/btnTotConfirm"
+            android:backgroundTint="@color/light_red"
+            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:onClick="onConfirmClick"
+            android:text="Confirm" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

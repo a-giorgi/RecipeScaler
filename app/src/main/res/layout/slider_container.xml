@@ -28,27 +28,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/inputTextStyle"
+        android:id="@+id/total_input_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/totalTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Total:" />
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/total"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:inputType="numberDecimal"
-            android:ems="10"
-            android:hint="(Specify total value)" />
-    </LinearLayout>
+            android:hint="Specify the total value" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:backgroundTint="@color/light_red"

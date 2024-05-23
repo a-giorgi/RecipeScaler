@@ -8,4 +8,8 @@
     <color name="transparent_dark_red">#2FBC2F2F</color>
     <color name="transparent_yellow">#0CFFBF44</color>
     <color name="text_color">#232323</color>
+
+    <color name="icons_color">#bc2f2f</color>
+    <color name="appbar">#ffbf44</color>
+    <color name="background">#FFFFFFFF</color>
 </resources>

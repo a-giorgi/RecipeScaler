@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -70,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final String[] PERMISSIONS_REQUIRED = new String[]{
             android.Manifest.permission.CAMERA};
+
+    private static final int MAX_SLIDER_VALUE = 200;
+    private static final int MIN_SLIDER_VALUE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,11 +160,12 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                //photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                //photo.compress(Bitmap.CompressFormat.PNG, 100, bytes);
                 String path = MediaStore.Images.Media.insertImage(
-                        getApplicationContext().getContentResolver(), photo, "Title",
+                        this.getContentResolver(), photo, "Title",
                         null);
                 launchImageCropper(Uri.parse(path));
+
             }
         });
 
@@ -201,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     private void showElementDialog(View view){
         AddElementDialog addElementDialog = new AddElementDialog(this);
         addElementDialog.show(getSupportFragmentManager(), "dialog");
+
 
     }
 
@@ -256,6 +263,16 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
         Slider slider = this.findViewById(R.id.seekBar);
         int slVal = (int)(scaleFactor*100);
+        if(slVal>MAX_SLIDER_VALUE){
+            slVal = 200;
+            Toast.makeText(this.getBaseContext(),"Slider scaling factor exceeds 200! Forced to 200.",Toast.LENGTH_LONG).show();
+            scaleFactor = 2;
+        }else if(slVal< MIN_SLIDER_VALUE){
+            slVal = 1;
+            scaleFactor = 0.01;
+            Toast.makeText(this.getBaseContext(),"Slider scaling factor is lower than 1! Forced to 1.",Toast.LENGTH_LONG).show();
+        }
+
         slider.setValue(slVal);
 
         scaleElements(scaleFactor);

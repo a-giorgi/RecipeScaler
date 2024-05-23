@@ -41,20 +41,12 @@ public class TextDialog extends DialogFragment {
         Button btnConfirm = view.findViewById(R.id.btnConfirm);
 
         editText.setText(text);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        btnCancel.setOnClickListener(v -> dismiss());
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String inputText = editText.getText().toString();
-                dialogCallback.onTextConfirmed(inputText);
-                dismiss();
-            }
+        btnConfirm.setOnClickListener(v -> {
+            String inputText = editText.getText().toString();
+            dialogCallback.onTextConfirmed(inputText);
+            dismiss();
         });
 
         return builder.create();

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -47,32 +48,27 @@ public class TotalDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.total_dialog, null);
 
         EditText editTextTotal = view.findViewById(R.id.new_total_value);
+        Button btnCancel = view.findViewById(R.id.btnTotCancel);
+        Button btnConfirm = view.findViewById(R.id.btnTotConfirm);
 
+        builder.setView(view).setTitle("Enter the new total");
 
-        builder.setView(view)
-                .setTitle("Enter New Total Value")
-                .setPositiveButton("OK", null)
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        btnCancel.setOnClickListener(v -> dismiss());
+        btnConfirm.setOnClickListener(v -> {
+            String total = editTextTotal.getText().toString();
+
+            if(total.isEmpty()){
+                Toast.makeText(getContext(),"Please fill every field",
+
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            dialogCallback.onTotalChanged(Double.parseDouble(total), index);
+            dismiss();
+        });
 
         Dialog dialog = builder.create();
-        dialog.setOnShowListener(dialog1 -> {
-            AlertDialog alertDialog = (AlertDialog) dialog1;
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-                String total = editTextTotal.getText().toString();
-
-                if(total.isEmpty()){
-                    Toast.makeText(getContext(),"Please fill every field",
-
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-
-
-                dialogCallback.onTotalChanged(Double.parseDouble(total), index);
-                dismiss();
-            });
-        });
         dialog.setCancelable(false);
         return dialog;
     }
