@@ -265,12 +265,12 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         int slVal = (int)(scaleFactor*100);
         if(slVal>MAX_SLIDER_VALUE){
             slVal = 200;
-            Toast.makeText(this.getBaseContext(),"Slider scaling factor exceeds 200! Forced to 200.",Toast.LENGTH_LONG).show();
-            scaleFactor = 2;
+            //Toast.makeText(this.getBaseContext(),"Slider scaling factor exceeds 200! Forced to 200.",Toast.LENGTH_LONG).show();
+            //scaleFactor = 2;
         }else if(slVal< MIN_SLIDER_VALUE){
             slVal = 1;
-            scaleFactor = 0.01;
-            Toast.makeText(this.getBaseContext(),"Slider scaling factor is lower than 1! Forced to 1.",Toast.LENGTH_LONG).show();
+            //scaleFactor = 0.01;
+            //Toast.makeText(this.getBaseContext(),"Slider scaling factor is lower than 1! Forced to 1.",Toast.LENGTH_LONG).show();
         }
 
         slider.setValue(slVal);
