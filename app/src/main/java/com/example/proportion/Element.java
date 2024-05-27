@@ -5,6 +5,7 @@ public class Element {
     private String name;
     private double quantity;
     private double initialValue;
+    private boolean decimal = true;
 
     public Element(String name, double quantity) {
         this.name = name;
@@ -36,4 +37,11 @@ public class Element {
         this.quantity = quantity;
     }
 
+    public boolean isDecimal() {
+        return decimal;
+    }
+
+    public void setDecimal(boolean decimal) {
+        this.decimal = decimal;
+    }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,10 +20,11 @@ public class AddElementDialog extends DialogFragment {
     String name;
     double value;
     int index;
+    boolean allowDecimals;
     Type type;
     DialogCallback dialogCallback;
     public interface DialogCallback {
-        void onResult(String name, double value, int index);
+        void onResult(String name, double value, int index, boolean allowDecimals);
     }
     enum Type {
         ADD,
@@ -36,10 +38,11 @@ public class AddElementDialog extends DialogFragment {
         this.index = -1;
     }
 
-    public void setData(String name, String value, int index){
+    public void setData(String name, String value, boolean allowDecimals, int index){
         this.name = name;
         this.value = Double.parseDouble(value);
         this.index = index;
+        this.allowDecimals = allowDecimals;
         this.type = Type.EDIT;
     }
 
@@ -53,6 +56,8 @@ public class AddElementDialog extends DialogFragment {
 
         EditText editTextName = view.findViewById(R.id.editTextName);
         EditText editTextValue = view.findViewById(R.id.editTextValue);
+        CheckBox allowDecimalsCheckBox = view.findViewById(R.id.allowDecimals);
+
 
         Button btnCancel = view.findViewById(R.id.btnElCancel);
         Button btnConfirm = view.findViewById(R.id.btnElConfirm);
@@ -60,6 +65,7 @@ public class AddElementDialog extends DialogFragment {
         if(type == Type.EDIT){
             editTextName.setText(name);
             editTextValue.setText(String.valueOf(value));
+            allowDecimalsCheckBox.setChecked(allowDecimals);
         }
 
         builder.setView(view).setTitle("Enter an item");
@@ -69,6 +75,7 @@ public class AddElementDialog extends DialogFragment {
         btnConfirm.setOnClickListener(v -> {
             String name = editTextName.getText().toString();
             String value = editTextValue.getText().toString();
+            boolean allowDecimals = allowDecimalsCheckBox.isChecked();
 
             if (name.isEmpty() || value.isEmpty()) {
                 Toast.makeText(getContext(), "Please fill every field",
@@ -76,7 +83,7 @@ public class AddElementDialog extends DialogFragment {
                 return;
             }
 
-            dialogCallback.onResult(name, Double.parseDouble(value), index);
+            dialogCallback.onResult(name, Double.parseDouble(value), index, allowDecimals);
             dismiss();
         });
 

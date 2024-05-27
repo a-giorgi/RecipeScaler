@@ -211,9 +211,9 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
     }
 
-    private void showElementDialog(View view, String name, String quantity, int index){
+    private void showElementDialog(View view, String name, String quantity, boolean allowDecimals, int index){
         AddElementDialog addElementDialog = new AddElementDialog(this);
-        addElementDialog.setData(name,quantity,index);
+        addElementDialog.setData(name,quantity,allowDecimals,index);
         addElementDialog.show(getSupportFragmentManager(), "dialog");
 
     }
@@ -231,16 +231,18 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     }
 
     @Override
-    public void onResult(String name, double value, int index) {
+    public void onResult(String name, double value, int index, boolean allowDecimals) {
         if(index<0) {
             Element newElement = new Element(name,value);
             newElement.setInitialValue(value/currentScaleFactor);
+            newElement.setDecimal(allowDecimals);
             listContentElements.add(newElement);
             listContentAdapter.notifyItemInserted(listContentElements.size() - 1);
         }else{
             listContentElements.get(index).setName(name);
             listContentElements.get(index).setQuantity(value);
             listContentElements.get(index).setInitialValue(value/currentScaleFactor);
+            listContentElements.get(index).setDecimal(allowDecimals);
             listContentAdapter.notifyItemChanged(index);
         }
     }
@@ -437,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
 
             ImageButton editButton = (ImageButton) itemView.findViewById((R.id.edit_element_button));
             editButton.setOnClickListener(v -> {
-                showElementDialog(v,title.getText().toString(), quantity.getText().toString(),index);
+                showElementDialog(v,title.getText().toString(), quantity.getText().toString(), true ,index);
             });
             ImageButton deleteButton = (ImageButton) itemView.findViewById((R.id.delete_element_button));
             deleteButton.setOnClickListener(v -> {
