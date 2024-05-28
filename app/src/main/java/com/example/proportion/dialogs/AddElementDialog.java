@@ -64,8 +64,12 @@ public class AddElementDialog extends DialogFragment {
 
         if(type == Type.EDIT){
             editTextName.setText(name);
-            editTextValue.setText(String.valueOf(value));
             allowDecimalsCheckBox.setChecked(allowDecimals);
+            String valueText = String.valueOf(value);
+            if(!allowDecimals){
+                valueText = String.valueOf((int)value);
+            }
+            editTextValue.setText(valueText);
         }
 
         builder.setView(view).setTitle("Enter an item");

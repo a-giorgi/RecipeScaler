@@ -103,9 +103,15 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             @Override
             public void onBindViewHolder(@NonNull ListElementViewHolder viewHolder, int i) {
                 viewHolder.setIndex(i);
+                double quantity = listContentElements.get(i).getQuantity();
+                String quantityText = String.valueOf(quantity);
+                if(!listContentElements.get(i).isDecimal()){
+                    quantityText = String.valueOf((int)(Math.round(quantity)));
+                }
                 viewHolder.title.setText(listContentElements.get(i).getName());
-                viewHolder.quantity.setText(String.valueOf(listContentElements.get(i).
-                        getQuantity()));
+                viewHolder.quantity.setText(quantityText);
+                viewHolder.allowDecimal.setText(String.valueOf(listContentElements.get(i).
+                        isDecimal()));
 
             }
 
@@ -426,6 +432,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     class ListElementViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView quantity;
+        TextView allowDecimal;
         int index;
 
         public void setIndex(int index) {
@@ -436,10 +443,12 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.list_element);
             quantity = (TextView) itemView.findViewById(R.id.list_element_qty);
+            allowDecimal = (TextView) itemView.findViewById(R.id.hiddenTextView);
 
             ImageButton editButton = (ImageButton) itemView.findViewById((R.id.edit_element_button));
             editButton.setOnClickListener(v -> {
-                showElementDialog(v,title.getText().toString(), quantity.getText().toString(), true ,index);
+                showElementDialog(v,title.getText().toString(), quantity.getText().toString(),
+                        Boolean.parseBoolean(allowDecimal.getText().toString()),index);
             });
             ImageButton deleteButton = (ImageButton) itemView.findViewById((R.id.delete_element_button));
             deleteButton.setOnClickListener(v -> {
