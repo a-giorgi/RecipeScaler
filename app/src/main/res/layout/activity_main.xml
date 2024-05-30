@@ -47,6 +47,7 @@
         android:layout_gravity="bottom|center"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
-        app:srcCompat="@drawable/plus_solid" />
+        app:srcCompat="@drawable/plus_solid"
+        android:contentDescription="@string/add_new_element" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -15,7 +15,7 @@ import com.example.proportion.R;
 
 public class TextDialog extends DialogFragment {
 
-    private String text = "";
+    private String text;
 
     TextDialog.TextDialogCallback dialogCallback;
     public interface TextDialogCallback {
@@ -45,6 +45,7 @@ public class TextDialog extends DialogFragment {
 
         btnConfirm.setOnClickListener(v -> {
             String inputText = editText.getText().toString();
+            text = inputText;
             dialogCallback.onTextConfirmed(inputText);
             dismiss();
         });

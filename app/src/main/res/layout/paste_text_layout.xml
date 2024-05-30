@@ -21,7 +21,8 @@
             android:layout_height="match_parent"
             android:gravity="top"
             android:textColor="@color/text_color"
-            android:hint="Enter the text with the recipe..."
+            android:importantForAutofill="no"
+            android:hint="@string/text_recipe"
             android:inputType="textMultiLine"
             android:minLines="5"
             android:scrollbars="vertical" />
@@ -42,8 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:onClick="onCancelClick"
-            android:text="Cancel" />
+            android:text="@string/cancel"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/btnConfirm"
@@ -53,8 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:onClick="onConfirmClick"
-            android:text="Confirm" />
+            android:text="@string/confirm"
+            style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
 

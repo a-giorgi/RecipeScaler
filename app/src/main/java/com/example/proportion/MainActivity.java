@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -36,7 +34,6 @@ import android.view.View;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.activity.result.ActivityResultLauncher;
@@ -57,11 +54,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AddElementDialog.DialogCallback,
         TotalDialog.TotalDialogCallback, TextDialog.TextDialogCallback {
 
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
     private ActivityResultLauncher<Intent> cameraLauncher;
-    private LayoutInflater inflater;
-    private RecyclerView listContentView;
     private ArrayList<Element> listContentElements;
     private RecyclerView.Adapter<ListElementViewHolder> listContentAdapter;
 
@@ -80,15 +73,15 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        com.example.proportion.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
 
-        inflater = LayoutInflater.from(this.getBaseContext());
+        //LayoutInflater inflater = LayoutInflater.from(this.getBaseContext());
 
         listContentElements = new ArrayList<>();
-        listContentView = (RecyclerView) findViewById(R.id.main_list);
+        RecyclerView listContentView = (RecyclerView) findViewById(R.id.main_list);
         listContentAdapter = new RecyclerView.Adapter<ListElementViewHolder>() {
 
             @NonNull
@@ -146,12 +139,12 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         Slider slider = (Slider) this.findViewById(R.id.seekBar);
         slider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onStartTrackingTouch(Slider slider) {
+            public void onStartTrackingTouch(@NonNull Slider slider) {
 
             }
 
             @Override
-            public void onStopTrackingTouch(Slider slider) {
+            public void onStopTrackingTouch(@NonNull Slider slider) {
                 float value = slider.getValue();
                 double scaleFactor = value /100.0;
                 scaleElements(scaleFactor);
@@ -261,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
         }
         double previous = Double.parseDouble(previousTotalText.getText().toString());
         if(previous<=0){
-            Toast.makeText(this.getBaseContext(),"You must insert a value greater than zero!",
+            Toast.makeText(this.getBaseContext(),getString(R.string.greater_than_zero),
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -462,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements AddElementDialog.
     }
 
     public void convertStringToItems(String string, String[] tags){
-        String words[] = string.split("\\s+");
+        String[] words = string.split("\\s+");
         String lastTag = "NONE";
         int lastIdx = -1;
         for(int i = 0; i<words.length; i++){

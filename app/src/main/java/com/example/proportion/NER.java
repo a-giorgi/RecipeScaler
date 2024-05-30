@@ -4,17 +4,14 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.util.Log;
-import android.widget.MultiAutoCompleteTextView;
 
 import org.tensorflow.lite.Interpreter;
 
 
-import java.io.BufferedReader;
 import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -26,9 +23,9 @@ public class NER {
     public static final String model = "NER.tflite";
     public static final String word_index = "tokenizer_word_index.json";
     public static final String tags_mapper = "id2tag.json";
-    private Interpreter interpreter;
-    private HashMap<String, String> tokenizer;
-    private HashMap<String, String> tokenToTag;
+    private final Interpreter interpreter;
+    private final HashMap<String, String> tokenizer;
+    private final HashMap<String, String> tokenToTag;
     private final int SENTENCE_LENGTH = 72;
     private static NER instance = null;
 
@@ -44,10 +41,6 @@ public class NER {
         interpreter = new Interpreter(loadModelFile(assetManager, model));
         tokenizer = loadJSONToHashMap(assetManager,word_index);
         tokenToTag = loadJSONToHashMap(assetManager,tags_mapper);
-    }
-
-    public HashMap<String, String> getTokenToTag() {
-        return tokenToTag;
     }
 
     private MappedByteBuffer loadModelFile(AssetManager assetManager, String modelPath)

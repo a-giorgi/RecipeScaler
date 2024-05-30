@@ -15,7 +15,9 @@
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name" />
+        android:hint="@string/name"
+        android:importantForAutofill="no"
+        android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -30,7 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
-        android:hint="Value" />
+        android:hint="@string/value"
+        android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -47,7 +50,7 @@
             android:layout_weight="1"
             android:checked = "true"
             android:buttonTint="@color/light_red"
-            android:text="Allow decimals" />
+            android:text="@string/allow_decimals" />
     </LinearLayout>
 
     <LinearLayout
@@ -64,8 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:onClick="onCancelClick"
-            android:text="Cancel" />
+            android:text="@string/cancel"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/btnElConfirm"
@@ -75,8 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:onClick="onConfirmClick"
-            android:text="Confirm" />
+            android:text="@string/confirm"
+            style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
 

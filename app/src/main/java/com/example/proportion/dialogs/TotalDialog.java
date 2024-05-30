@@ -1,7 +1,6 @@
 package com.example.proportion.dialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,27 +15,17 @@ import androidx.fragment.app.DialogFragment;
 import com.example.proportion.R;
 
 public class TotalDialog extends DialogFragment {
-    double value;
     int index;
 
     TotalDialogCallback dialogCallback;
     public interface TotalDialogCallback {
         void onTotalChanged(double value, int index);
     }
-    enum Type {
-        ADD,
-        EDIT
-    }
 
 
     public TotalDialog(TotalDialogCallback dialogCallback) {
         this.dialogCallback = dialogCallback;
         this.index = -1;
-    }
-
-    public void setData(String value, int index){
-        this.value = Double.parseDouble(value);
-        this.index = index;
     }
 
     @NonNull

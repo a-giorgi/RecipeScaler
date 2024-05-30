@@ -19,6 +19,7 @@
 
 
         android:id="@+id/seekBar"
+        android:outlineSpotShadowColor="@color/yellow"
         android:valueFrom="1"
         android:valueTo="200"
         android:value="100"
